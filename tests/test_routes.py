@@ -41,7 +41,6 @@ class TestAccountService(TestCase):
         # Disable HTTPS redirects for testing
         talisman.force_https = False
 
-
     @classmethod
     def tearDownClass(cls):
         """Runs once before test suite"""
@@ -173,7 +172,7 @@ class TestAccountService(TestCase):
         """It should not allow an illegal method call"""
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+
     def test_security_headers(self):
         """It should return the security headers via Flask-Talisman"""
         response = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
@@ -184,6 +183,7 @@ class TestAccountService(TestCase):
         self.assertEqual(headers.get("X-Content-Type-Options"), "nosniff")
         self.assertIn("default-src 'self'", headers.get("Content-Security-Policy"))
         self.assertEqual(headers.get("Referrer-Policy"), "strict-origin-when-cross-origin")
+    
     def test_cors_security(self):
         """It should return a CORS header"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
